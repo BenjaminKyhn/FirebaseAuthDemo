@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mGoogleSignInClient.signOut();
                 Toast.makeText(MainActivity.this,"You are Logged Out",Toast.LENGTH_SHORT).show();
+                signInButton.setVisibility(View.VISIBLE);
                 signOutButton.setVisibility(View.INVISIBLE);
                 btnNext.setVisibility(View.INVISIBLE);
             }
@@ -118,18 +119,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(MainActivity.this, "Successful", Toast.LENGTH_SHORT).show();
                         FirebaseUser user = mAuth.getCurrentUser();
                         updateUI(user);
                     } else {
-                        Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                         updateUI(null);
                     }
                 }
             });
-        }
-        else{
-            Toast.makeText(MainActivity.this, "Account Failed", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -139,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
             activeAccounts.add(account);
             String personName = account.getDisplayName();
             String personEmail = account.getEmail();
+            signInButton.setVisibility(View.INVISIBLE);
             btnNext.setVisibility(View.VISIBLE);
             signOutButton.setVisibility(View.VISIBLE);
             Toast.makeText(MainActivity.this,personName + " " + personEmail ,Toast.LENGTH_SHORT).show();
