@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     private SignInButton signInButton;
     private Button signOutButton;
@@ -32,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private  String TAG = "MainActivity";
     private FirebaseAuth mAuth;
     private int RC_SIGN_IN = 1;
-
+    GoogleSignInAccount account;
+    ArrayList<GoogleSignInAccount> activeAccounts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +67,18 @@ public class MainActivity extends AppCompatActivity {
                 mGoogleSignInClient.signOut();
                 Toast.makeText(MainActivity.this,"You are Logged Out",Toast.LENGTH_SHORT).show();
                 signOutButton.setVisibility(View.INVISIBLE);
+                btnNext.setVisibility(View.INVISIBLE);
             }
         });
+
+        signOutButton.setVisibility(View.INVISIBLE);
+        btnNext.setVisibility(View.INVISIBLE);
     }
 
     public void next(View v){
-        Intent myIntent = new Intent(this, SecondActivity.class);
-        startActivity(myIntent);
+            Intent myIntent = new Intent(this, SecondActivity.class);
+            myIntent.putExtra("accountList", activeAccounts);
+            startActivity(myIntent);
     }
 
     private void signIn(){
@@ -124,12 +132,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser fUser){
-        signOutButton.setVisibility(View.VISIBLE);
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if(account !=  null){
+            activeAccounts.add(account);
             String personName = account.getDisplayName();
             String personEmail = account.getEmail();
-
+            btnNext.setVisibility(View.VISIBLE);
+            signOutButton.setVisibility(View.VISIBLE);
             Toast.makeText(MainActivity.this,personName + " " + personEmail ,Toast.LENGTH_SHORT).show();
         }
     }
