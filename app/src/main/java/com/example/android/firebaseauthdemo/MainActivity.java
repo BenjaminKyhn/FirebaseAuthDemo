@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
             Intent myIntent = new Intent(this, SecondActivity.class);
             myIntent.putExtra("accountList", activeAccounts);
             startActivity(myIntent);
+
+            // TODO: Pass only the current GoogleSignInAccount instead of an array with the intent
     }
 
     private void signIn(){

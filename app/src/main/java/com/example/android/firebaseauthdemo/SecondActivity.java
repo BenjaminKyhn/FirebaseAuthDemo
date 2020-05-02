@@ -25,7 +25,7 @@ public class SecondActivity extends AppCompatActivity {
         activeAccounts = (ArrayList<GoogleSignInAccount>) startIntent.getSerializableExtra("accountList");
 
         for(int i = 0; i < activeAccounts.size(); i++) {
-            outputText.setText("Account ID is: " + activeAccounts.get(i).getId());
+            outputText.setText("Account ID is: " + activeAccounts.get(i).getId() + " and the user's name is " + activeAccounts.get(i).getDisplayName() + "\n");
         }
     }
 }
